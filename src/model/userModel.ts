@@ -6,7 +6,7 @@ export interface IMessage extends Document {
 }
 
 export interface IUser extends Document {
-  userName: string;
+  username: string;
   email: string;
   password: string;
   verifyCode: string;
@@ -33,7 +33,7 @@ const messagesSchema: Schema<IMessage> = new Schema(
 
 const userSchema: Schema<IUser> = new Schema(
   {
-    userName: {
+    username: {
       type: String,
       required: true,
       unique: true,
@@ -62,15 +62,16 @@ const userSchema: Schema<IUser> = new Schema(
       default: false,
     },
     isAcceptingMessage: {
-        type: Boolean,
-        default: true
+      type: Boolean,
+      default: true,
     },
-    messages: [messagesSchema]
+    messages: [messagesSchema],
   },
   { timestamps: true }
 );
 
+const User =
+  (mongoose.models.users as mongoose.Model<IUser>) ||
+  mongoose.model<IUser>("users", userSchema);
 
-const Messages = mongoose.models.messages as mongoose.Model<IMessage> || mongoose.model<IMessage>('messages', messagesSchema)
-
-const User = mongoose.models.users as mongoose.Model<IUser> || mongoose.model<IUser>('users', userSchema)
+export default User;
