@@ -8,10 +8,13 @@ export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
   const isPublicPath =
-    path === "/log-in" || path === "/sign-up" || path === "/verifyemail";
+    path === "/log-in" ||
+    path === "/sign-up" ||
+    path === "/verify" ||
+    path === "/";
 
   if (isPublicPath && token) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
   if (!isPublicPath && !token) {
     return NextResponse.redirect(new URL("/log-in", request.url));
@@ -20,12 +23,5 @@ export async function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: [
-    "/",
-    "/log-in",
-    "/sign-up",
-    "/verifyemail",
-    "/dashboard/:path*",
-    "/verify/:path*",
-  ],
+  matcher: ["/", "/log-in", "/sign-up", "/dashboard/:path*", "/verify/:path*"],
 };
