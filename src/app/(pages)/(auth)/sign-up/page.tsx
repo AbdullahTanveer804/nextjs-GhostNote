@@ -53,7 +53,7 @@ const SignUpPage: NextPage = () => {
           const response = await axios.get(
             `/api/check-username-unique?username=${username}`
           );
-          let message = response.data.message
+          let message = response.data.message;
           setUsernameMessage(message);
         } catch (error) {
           const axiosError = error as AxiosError<IApiResponse>;
@@ -77,7 +77,7 @@ const SignUpPage: NextPage = () => {
         title: "Success",
         description: response.data.message,
       });
-      router.replace(`/verify/${username}`);
+      router.replace(`verify/${username}`);
       setIsSubmitting(false);
     } catch (error) {
       console.log("Error in signing up of user", error);
@@ -95,7 +95,19 @@ const SignUpPage: NextPage = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
-        <div className="text-center "></div>
+        <div className="text-center ">
+          <div className="flex justify-center mb-6">
+            <img src="/logored.png" alt="Google" className="h-12" />
+          </div>
+          <div>
+            <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
+              Verify Your Account
+            </h1>
+            <p className="mb-4">
+              Enter the verification code sent to your email
+            </p>
+          </div>
+        </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField

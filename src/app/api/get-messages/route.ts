@@ -24,8 +24,8 @@ export async function GET(request: NextRequest) {
 
   try {
     const user = await User.aggregate([
-      { $match: { id: userId } },
-      { $unwind: "messages" },
+      { $match: { _id: userId } },
+      { $unwind: "$messages" },
       { $sort: { "messages.createdAt": -1 } },
       { $group: { _id: "$_id", messages: { $push: "$messages" } } },
     ]);

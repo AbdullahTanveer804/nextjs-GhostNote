@@ -1,53 +1,64 @@
-export default function EmailPreviewPage() {
-  const code = "748109";
-  const recoveryEmail = "bilyx67@gmail.com";
-  const userEmail = "bilyx65@gmail.com";
+"use client";
 
+import { Mail } from "lucide-react"; // Assuming you have an icon for messages
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Autoplay from "embla-carousel-autoplay";
+import messages from "@/messages.json";
+
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import NavbarClientWrapper from "@/components/NavbarClientWrapper";
+
+export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center py-10">
-      <div className="bg-white rounded-xl shadow-md max-w-xl w-full p-8 border">
-        {/* Logo */}
-        <div className="flex justify-center mb-6">
-          <img
-            src="/logored.png"
-            
-            alt="Google"
-            className="h-12"
-          />
-        </div>
+    <>
+    <NavbarClientWrapper/>
+      {/* Main content */}
+      <main className="flex-grow flex flex-col items-center justify-center px-4 md:px-24 py-12 bg-gray-800 text-white">
+        <section className="text-center mb-8 md:mb-12">
+          <h1 className="text-3xl md:text-5xl font-bold">
+            Dive into the World of Anonymous Feedback
+          </h1>
+          <p className="mt-3 md:mt-4 text-base md:text-lg">
+            True Feedback - Where your identity remains a secret.
+          </p>
+        </section>
 
-        {/* Heading */}
-        <h2 className="text-xl font-semibold text-center mb-4">
-          Verify your recovery email
-        </h2>
+        {/* Carousel for Messages */}
+        <Carousel
+          plugins={[Autoplay({ delay: 2000 })]}
+          className="w-full max-w-lg md:max-w-xl"
+        >
+          <CarouselContent>
+            {messages.map((message, index) => (
+              <CarouselItem key={index} className="p-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>{message.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex flex-col md:flex-row items-start space-y-2 md:space-y-0 md:space-x-4">
+                    <Mail className="flex-shrink-0" />
+                    <div>
+                      <p>{message.content}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {message.received}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </main>
 
-        <hr className="my-4" />
-
-        {/* Message */}
-        <p className="text-sm text-gray-800 mb-4">
-          Google received a request to use <strong>{recoveryEmail}</strong> as a recovery email for Google Account{" "}
-          <strong>{userEmail}</strong>.
-        </p>
-
-        <p className="text-sm text-gray-800 mb-4">
-          Use this code to finish setting up this recovery email:
-        </p>
-
-        {/* Code */}
-        <div className="text-center text-3xl font-bold tracking-widest my-6">
-          {code}
-        </div>
-
-        {/* Expiry */}
-        <p className="text-sm text-gray-700 mb-2">
-          This code will expire in <strong>24 hours</strong>.
-        </p>
-
-        {/* Ignore Message */}
-        <p className="text-sm text-gray-600">
-          If you don’t recognize <strong>{userEmail}</strong>, you can safely ignore this email.
-        </p>
-      </div>
-    </div>
+      {/* Footer */}
+      <footer className="text-center p-4 md:p-6 bg-gray-900 text-white">
+        © 2023 True Feedback. All rights reserved.
+      </footer>
+    </>
   );
 }

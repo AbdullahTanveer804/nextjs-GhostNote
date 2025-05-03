@@ -1,3 +1,4 @@
+import { toast } from "@/hooks/use-toast";
 import { connectDB } from "@/lib/db/dbconnection";
 import User from "@/models/userModel";
 import bcrypt from "bcryptjs";
@@ -18,8 +19,8 @@ export const authOptions: NextAuthOptions = {
         try {
           const user = await User.findOne({
             $or: [
-              { email: credentials.identifier },
-              { username: credentials.identifier },
+              { email: credentials.email },
+              { username: credentials.email },
             ],
           });
           if (!user) {
@@ -65,7 +66,7 @@ export const authOptions: NextAuthOptions = {
     }
   },
   pages: {
-    signIn: '/sign-in'
+    signIn: '/log-in'
   },
   session: {
     strategy: 'jwt'

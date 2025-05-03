@@ -2,26 +2,29 @@ import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request });
-  const path = request.nextUrl.pathname;
+  const url = request.nextUrl;
 
-  const isPublicPath =
-    path === "/log-in" ||
-    path === "/sign-up" ||
-    path === "/verify" ||
-    path === "/";
-
-  if (isPublicPath && token) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
-  }
-  if (!isPublicPath && !token) {
+  // If NOT logged in and trying to access protected routes
+  if (!token && url.pathname.startsWith("/dashboard")) {
     return NextResponse.redirect(new URL("/log-in", request.url));
   }
+
+  // If logged in and trying to access auth routes
+  if (token && (
+      url.pathname.startsWith("/log-in") ||
+      url.pathname.startsWith("/sign-up") ||
+      url.pathname.startsWith("/verify")
+    )
+  ) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
+  // Otherwise allow
+  return NextResponse.next();
 }
 
-// See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/", "/log-in", "/sign-up", "/dashboard/:path*", "/verify/:path*"],
+  matcher: ["/", "/sign-in", "/sign-up", "/dashboard/:path*", "/verify/:path*"],
 };

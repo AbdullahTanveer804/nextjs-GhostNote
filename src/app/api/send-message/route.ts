@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { authOptions } from "../auth/[...nextauth]/options";
-import { getServerSession, User as authUser } from "next-auth";
 import { connectDB } from "@/lib/db/dbconnection";
-import mongoose from "mongoose";
 import User, { IMessage } from "@/models/userModel";
 
 export async function POST(request: NextRequest) {
@@ -21,7 +18,7 @@ export async function POST(request: NextRequest) {
         { status: 404 }
       );
     }
-    if(!user.isAcceptingMessage)
+    if(!user.isAcceptingMessages)
     return NextResponse.json(
       {
         success: false,
